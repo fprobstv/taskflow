@@ -18,7 +18,7 @@ class Column(models.Model):
         return f"{self.board.name} - {self.title}"
     
 class Task(models.Model):
-    olumn = models.ForeignKey(Column, related_name='tasks', on_delete=models.CASCADE)
+    column = models.ForeignKey(Column, related_name='tasks', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

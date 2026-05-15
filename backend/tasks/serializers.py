@@ -4,7 +4,7 @@ from .models import Board, Column, Task
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'order', 'created_at']
+        fields = ['id', 'title', 'description', 'order', 'created_at', 'column']
 
 class ColumnSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
