@@ -11,7 +11,7 @@ class ColumnSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Column
-        fields = ['id', 'title', 'order', 'tasks']
+        fields = ['id', 'title', 'order', 'tasks', 'board']
 
 class BoardSerializer(serializers.ModelSerializer):
     columns = ColumnSerializer(many=True, read_only=True)
