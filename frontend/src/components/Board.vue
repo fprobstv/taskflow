@@ -85,7 +85,6 @@ const createColumn = async () => {
   overflow-x: auto; 
   height: calc(100vh - 120px);
 }
-
 .column { 
     background-color: #ebecf0; 
     border-radius: 5px; 

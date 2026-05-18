@@ -10,14 +10,28 @@ const activeBoard = computed(() => {
   return boards.value.length > 0 ? boards.value[0] : null
 })
 
-onMounted(async () => {
+const fetchBoards = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/boards/')
     boards.value = response.data
   } catch (error) {
     console.error("Erro ao buscar a API:", error)
-  } finally {
-    isLoading.value = false 
+  }
+}
+
+onMounted(async () => {
+  await fetchBoards()
+  isLoading.value = false
+
+  const ws = new WebSocket('ws://127.0.0.1:8081/ws')
+
+  ws.onopen = () => {
+    console.log("Conectado ao WebSocket do Goland com sucesso!")
+  }
+
+  ws.onmessage = (event) => {
+    console.log("Aviso do Go recebido:", event.data)
+    fetchBoards()
   }
 })
 
@@ -62,12 +76,10 @@ const onDragEnd = async (event) => {
   background-color: #0079bf; 
   color: white; 
 }
-
 .app-header { 
   padding: 10px 20px; 
   background-color: rgba(0, 0, 0, 0.2); 
 }
-
 .info-state { 
   text-align: center; 
   margin-top: 50px; 

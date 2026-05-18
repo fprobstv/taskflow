@@ -14,14 +14,13 @@ var ctx = context.Background()
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true 
+		return true
 	},
 }
 
 var clients = make(map[*websocket.Conn]bool)
 
 func main() {
-	// 1. Conecta no Redis
 	rdb := redis.NewClient(&redis.Options{
 		Addr: "127.0.0.1:6379",
 	})
@@ -33,7 +32,7 @@ func main() {
 		ch := pubsub.Channel()
 		for msg := range ch {
 			fmt.Println("📢 Recebido do Redis:", msg.Payload)
-			
+
 			for client := range clients {
 				err := client.WriteMessage(websocket.TextMessage, []byte(msg.Payload))
 				if err != nil {
