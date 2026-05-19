@@ -76,7 +76,27 @@ const createColumn = async () => {
 </template>
 
 <style scoped>
-.board-title { padding: 15px 20px; font-size: 1.2rem; }
+.board-wrapper {
+  background: linear-gradient(135deg, #0079bf, #5067c5);
+  min-height: 100vh;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.columns-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  overflow-x: auto; 
+  padding-bottom: 20px; 
+  height: calc(100vh - 80px); 
+}
+.board-title { 
+  padding: 15px 20px; 
+  font-size: 1.2rem; 
+  color: white; 
+  margin-top: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); 
+}
 .board-columns {
   display: flex;
   align-items: flex-start;

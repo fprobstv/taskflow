@@ -87,3 +87,10 @@ const onDragEnd = async (event) => {
   font-weight: 500; 
 }
 </style>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0079bf; 
+}
+</style>
