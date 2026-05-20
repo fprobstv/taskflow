@@ -3,18 +3,20 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import Board from './components/Board.vue'
 import Login from './components/Login.vue'
+import Register from './components/Register.vue'
 import Dashboard from './components/Dashboard.vue'
 
 const boardData = ref(null)
 const isAuthenticated = ref(false) 
 const isLoading = ref(true)
+const currentScreen = ref('login') 
 const currentBoardId = ref(null)
 
 const fetchBoards = async () => {
   if (!currentBoardId.value) return
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get(`http://127.0.0.1:8000/api/boards/${currentBoardId.value}/`, {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/boards/${currentBoardId.value}/`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     boardData.value = response.data
@@ -32,7 +34,7 @@ const onDragEnd = async (event) => {
   const token = localStorage.getItem('access_token')
   
   try {
-    await axios.patch(`http://127.0.0.1:8000/api/tasks/${taskId}/`, 
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/tasks/${taskId}/`, 
       { column: newColumnId },
       { headers: { Authorization: `Bearer ${token}` } }
     )
@@ -43,7 +45,7 @@ const onDragEnd = async (event) => {
 
 const handleLoginSuccess = () => {
   isAuthenticated.value = true
-  fetchBoards()
+  currentScreen.value = 'login' 
   connectWebSocket() 
 }
 
@@ -62,29 +64,30 @@ const handleLogout = () => {
   localStorage.removeItem('refresh_token')
   isAuthenticated.value = false
   boardData.value = null
+  currentBoardId.value = null
 }
 
 const connectWebSocket = () => {
-  const ws = new WebSocket('ws://127.0.0.1:8081/ws')
+  const ws = new WebSocket(import.meta.env.VITE_WS_URL)
   ws.onopen = () => console.log("Conectado ao WebSocket do Golang!")
   ws.onmessage = () => fetchBoards()
 }
 
-onMounted(async () => {
+onMounted(() => {
   const token = localStorage.getItem('access_token')
   if (token) {
     isAuthenticated.value = true
-    await fetchBoards()
-    connectWebSocket()
+    connectWebSocket() 
   }
-  isLoading.value = false
+  isLoading.value = false 
 })
+
 </script>
 
 <template>
   <main class="app-container">
     <header class="app-header">
-      <h1>TaskFlow Pro</h1>
+      <h1>TaskFlow</h1>
       <div v-if="isAuthenticated" class="header-actions">
         <button v-if="currentBoardId" class="nav-btn" @click="handleBackToDashboard">📁 Meus Quadros</button>
         <button class="logout-btn" @click="handleLogout">Sair</button>
@@ -95,7 +98,17 @@ onMounted(async () => {
       <p>⏳ Carregando o sistema...</p>
     </div>
 
-    <Login v-else-if="!isAuthenticated" @login-success="handleLoginSuccess" />
+    <div v-else-if="!isAuthenticated">
+      <Login 
+        v-if="currentScreen === 'login'" 
+        @login-success="handleLoginSuccess" 
+        @go-to-register="currentScreen = 'register'" 
+      />
+      <Register 
+        v-else-if="currentScreen === 'register'" 
+        @back-to-login="currentScreen = 'login'" 
+      />
+    </div>
     
     <div v-else class="authenticated-area">
       

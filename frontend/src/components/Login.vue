@@ -9,16 +9,14 @@ const password = ref('')
 const errorMessage = ref('')
 
 const handleLogin = async () => {
-  console.log("1. Botão clicado! Tentando logar com:", username.value) 
   errorMessage.value = ''
   
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/token/`, {
       username: username.value,
       password: password.value
     })
-    
-    console.log("2. Sucesso! O Django devolveu os tokens:", response.data) 
+     
     localStorage.setItem('access_token', response.data.access)
     localStorage.setItem('refresh_token', response.data.refresh)
     
@@ -49,6 +47,11 @@ const handleLogin = async () => {
         <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
         
         <button type="submit" class="login-btn">Entrar</button>
+
+        <p class="footer-text">
+            Não tem uma conta? 
+            <a href="#" @click.prevent="$emit('go-to-register')">Cadastre-se aqui</a>
+        </p>
       </form>
     </div>
   </div>

@@ -25,7 +25,7 @@ const saveTitle = async () => {
   }
 
   try {
-    await axios.patch(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/tasks/${props.task.id}/`, {
       title: editTitle.value
     }, {
       headers: { Authorization: `Bearer ${token}` }
@@ -39,7 +39,7 @@ const saveTitle = async () => {
 const deleteTask = async () => {
   if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/tasks/${props.task.id}/`, {
         headers: { Authorization: `Bearer ${token}` }
       })
     } catch (error) {

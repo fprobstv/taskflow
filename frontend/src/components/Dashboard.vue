@@ -11,7 +11,7 @@ const isCreating = ref(false)
 const fetchMyBoards = async () => {
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get('http://127.0.0.1:8000/api/boards/', {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/boards/`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     boards.value = response.data
@@ -24,7 +24,7 @@ const createBoard = async () => {
   if (!newBoardName.value.trim()) return
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.post('http://127.0.0.1:8000/api/boards/', 
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/boards/`, 
       { name: newBoardName.value },
       { headers: { Authorization: `Bearer ${token}` } }
     )

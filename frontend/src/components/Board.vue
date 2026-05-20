@@ -22,7 +22,7 @@ const createColumn = async () => {
   if (!newColumnTitle.value.trim()) return
 
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/columns/', {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/columns/`, {
       title: newColumnTitle.value,
       board: props.board.id,
       order: props.board.columns.length
@@ -51,7 +51,7 @@ const shareBoard = async () => {
   const token = localStorage.getItem('access_token')
 
   try {
-    const response = await axios.post(`http://127.0.0.1:8000/api/boards/${props.board.id}/share/`, 
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/boards/${props.board.id}/share/`, 
       { username: username },
       { headers: { Authorization: `Bearer ${token}` } }
     )
