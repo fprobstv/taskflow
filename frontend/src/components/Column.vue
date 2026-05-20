@@ -60,6 +60,7 @@ const closeTaskForm = () => {
 }
 
 const createTask = async () => {
+  const token = localStorage.getItem('access_token')
   if (!newTaskTitle.value.trim()) return
 
   try {
@@ -68,7 +69,10 @@ const createTask = async () => {
       description: '', 
       order: 0,
       column: props.column.id 
-    })
+    }, {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+  )
     closeTaskForm()
   } catch (error) {
     console.error("Erro ao criar tarefa:", error)
@@ -222,6 +226,7 @@ const onDragEnd = (event) => {
   font-family: inherit;
   resize: none;
   height: 60px;
+  box-sizing: border-box;
 }
 .add-task-form textarea:focus {
   outline: none;

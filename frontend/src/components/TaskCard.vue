@@ -11,6 +11,7 @@ const props = defineProps({
 
 const isEditing = ref(false)
 const editTitle = ref(props.task.title)
+const token = localStorage.getItem('access_token')
 
 const startEditing = () => {
   editTitle.value = props.task.title
@@ -26,6 +27,8 @@ const saveTitle = async () => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
       title: editTitle.value
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
     })
     isEditing.value = false
   } catch (error) {
@@ -36,7 +39,9 @@ const saveTitle = async () => {
 const deleteTask = async () => {
   if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`)
+      await axios.delete(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
     } catch (error) {
       console.error("Erro ao deletar tarefa:", error)
     }
@@ -59,6 +64,8 @@ const saveDescription = async () => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
       description: editDescription.value
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
     })
     closeModal()
   } catch (error) {

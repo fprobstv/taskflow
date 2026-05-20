@@ -6,7 +6,7 @@ import json
 redis_client = redis.Redis(host='127.0.0.1', port=6379, db=0)
 class Board(models.Model):
     name = models.CharField(max_length=100)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='boards', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -16,6 +16,7 @@ const isAddingColumn = ref(false)
 const newColumnTitle = ref('')
 
 const createColumn = async () => {
+  const token = localStorage.getItem('access_token')
   if (!newColumnTitle.value.trim()) return
 
   try {
@@ -23,7 +24,10 @@ const createColumn = async () => {
       title: newColumnTitle.value,
       board: props.board.id,
       order: props.board.columns.length
-    })
+    },  {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+    )
 
     const novaColuna = response.data
     if (!novaColuna.tasks) novaColuna.tasks = []
@@ -147,6 +151,7 @@ const createColumn = async () => {
     margin-bottom: 8px; 
     font-family: inherit; 
     font-size: 0.9rem; 
+    box-sizing: border-box;
 }
 .add-column-form input:focus { 
     outline: none; 
