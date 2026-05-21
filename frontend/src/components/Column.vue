@@ -30,7 +30,7 @@ const saveTitle = async () => {
   }
 
   try {
-    await axios.patch(`http://127.0.0.1:8000/api/columns/${props.column.id}/`, {
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/columns/${props.column.id}/`, {
       title: editTitleText.value
     })
     isEditingTitle.value = false
@@ -42,7 +42,7 @@ const saveTitle = async () => {
 const deleteColumn = async () => {
   if (confirm("ATENÇÃO: Deseja mesmo excluir esta lista e TODAS as tarefas nela?")) {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/columns/${props.column.id}/`)
+      await axios.delete(`${import.meta.VITE_API_URL}/api/columns/${props.column.id}/`)
     } catch (error) {
       console.error("Erro ao deletar coluna:", error)
     }
@@ -64,7 +64,7 @@ const createTask = async () => {
   if (!newTaskTitle.value.trim()) return
 
   try {
-    await axios.post('http://127.0.0.1:8000/api/tasks/', {
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks/`, {
       title: newTaskTitle.value,
       description: '', 
       order: 0,

@@ -62,7 +62,7 @@ const closeModal = () => {
 
 const saveDescription = async () => {
   try {
-    await axios.patch(`http://127.0.0.1:8000/api/tasks/${props.task.id}/`, {
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/tasks/${props.task.id}/`, {
       description: editDescription.value
     }, {
       headers: { Authorization: `Bearer ${token}` }
