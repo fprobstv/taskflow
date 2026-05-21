@@ -2,6 +2,7 @@ from django.db import models, transaction
 from django.contrib.auth.models import User
 import redis
 import json
+import os
 
 redis_url = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/0')
 redis_client = redis.from_url(redis_url)

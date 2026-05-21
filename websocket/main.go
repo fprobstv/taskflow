@@ -31,9 +31,7 @@ func main() {
     if err != nil {
         log.Fatal("Erro ao configurar Redis: ", err)
     }
-	rdb := redis.NewClient(&redis.Options{
-		Addr: "127.0.0.1:6379",
-	})
+	rdb := redis.NewClient(opt)
 
 	pubsub := rdb.Subscribe(ctx, "board_updates")
 	defer pubsub.Close()
