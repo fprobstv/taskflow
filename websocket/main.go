@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 	"github.com/redis/go-redis/v9"
@@ -21,6 +22,15 @@ var upgrader = websocket.Upgrader{
 var clients = make(map[*websocket.Conn]bool)
 
 func main() {
+	redisURL := os.Getenv("REDIS_URL")
+    if redisURL == "" {
+        redisURL = "redis://127.0.0.1:6379/0"
+    }
+
+    opt, err := redis.ParseURL(redisURL)
+    if err != nil {
+        log.Fatal("Erro ao configurar Redis: ", err)
+    }
 	rdb := redis.NewClient(&redis.Options{
 		Addr: "127.0.0.1:6379",
 	})
